@@ -25,7 +25,7 @@ const ShowColorButton = (props: {
   };
   return (
     <Button height="60px" width="180px" onClick={handleClick}>
-      Toggle Color
+      {!showColor ? "Show Features": "Hide Features"}
     </Button>
   );
 };

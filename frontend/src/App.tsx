@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Page, { IntroPage, ViewerPage } from "./Components/Page";
 import { useShowColorButton } from "./Components/ShowColorButton";
 import { useInputForm, wakeUpLambda } from "./hooks/upload";
@@ -6,7 +6,11 @@ import { ErrorBoundary } from "react-error-boundary";
 import MediaQuery from "react-responsive";
 
 function App() {
-  const { file, cadFile, handleUpload, handleClearFile } = useInputForm();
+  const { file, cadFile, handleUpload, handleClearFile, handleDemoUpload } =
+    useInputForm();
+
+  const [showColdStartMessage, setShowColdStartMessage] = useState(false);
+
   const {
     showColorButton,
     showColor,
@@ -15,8 +19,25 @@ function App() {
     setFaceClassSelected,
   } = useShowColorButton();
 
+  const coldStartPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("Cold Start");
+    }, 2000);
+  });
+
   useEffect(() => {
-    wakeUpLambda();
+    Promise.race([wakeUpLambda(), coldStartPromise])
+      .then((value) => {
+        if (value === "Cold Start") {
+          setShowColdStartMessage(true);
+          setTimeout(() => {
+            setShowColdStartMessage(false);
+          }, 5000);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   }, []);
 
   return (
@@ -48,7 +69,11 @@ function App() {
           }
         >
           {!file ? (
-            <IntroPage handleUpload={handleUpload} />
+            <IntroPage
+              showColdStartMessage={showColdStartMessage}
+              handleUpload={handleUpload}
+              handleDemoUpload={handleDemoUpload}
+            />
           ) : (
             <ViewerPage
               showColorButton={showColorButton}

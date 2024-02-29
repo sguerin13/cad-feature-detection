@@ -27,16 +27,21 @@ export function useInputForm() {
     uploadFile(file, setFile, setCadFile);
   };
 
+  const handleDemoUpload = (file: File) => {
+    setFile(file);
+    uploadFile(file, setFile, setCadFile);
+  };
+
   const handleClearFile = () => {
     setFile(undefined);
     setCadFile(undefined);
   }
 
-  return { file, cadFile, handleUpload, handleClearFile };
+  return { file, cadFile, handleUpload, handleClearFile, handleDemoUpload };
 }
 
 export const uploadFile = (
-  uploadedFile: any,
+  uploadedFile: File | undefined,
   setFile: (file: File | undefined) => void,
   setReturnedFile: (file: ResponseType) => void
 ) => {
@@ -62,16 +67,9 @@ export const uploadFile = (
     });
 };
 
-export const wakeUpLambda = () => {
+export const wakeUpLambda = () =>
   API({
     method: "get",
     url: "/",
     responseType: "json",
-  })
-    .then((response: AxiosResponse<{ message: string }>) => {
-      console.log(response.data.message);
-    })
-    .catch((error: any) => {
-      console.log(error.message);
-    });
-};
+  });
