@@ -4,7 +4,7 @@ A minimal app that converts STEP files to Three.js via pythonOCC and detects the
 
 This project also makes use of the [occwl](https://github.com/AutodeskAILab/occwl) wrapper around PythonOCC to handle the mapping from BREP to graph representation.
 
-A live demo can be found [here](feature-detector.steveguerin.com)
+A live demo can be found [here](https://feature-detector.steveguerin.com)
 
 ### Tech Stack Info:
 
